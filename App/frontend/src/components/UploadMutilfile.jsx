@@ -41,7 +41,6 @@ class UploadMutilfile extends React.Component {
             </p>
           </Dragger>
         </div>
-        <img size="medium" src={this.state.urlImage} />
       </div>
     );
   }
