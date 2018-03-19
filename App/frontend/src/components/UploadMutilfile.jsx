@@ -11,7 +11,7 @@ const props = {
     const status = info.file.status;
     if (status !== 'uploading') {
       console.log(info.file, info.fileList);
-      console.log(info.fileList[0].response.file);
+      console.log(info.fileList[0].response.fileUrl);
     }
     if (status === 'done') {
       message.success(`${info.file.name} file uploaded successfully.`);

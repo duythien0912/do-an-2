@@ -30,7 +30,7 @@ app.use("/public", express.static(__dirname + "/public"));
 var db;
 
 MongoClient.connect(
-  "your_mongod_url",
+  "mongodb://admin:admin@ds249787.mlab.com:49787/uploadfile",
   (err, client) => {
     if (err) return console.log(err);
     db = client.db("uploadfile");
@@ -41,7 +41,7 @@ MongoClient.connect(
 app.post("/upload", (req, res, next) => {
   let imageFile = req.files.file;
   let id = uuidV1();
-  imageFile.mv(`${__dirname}/public/${id}`, function(err) {
+  imageFile.mv(`${__dirname}/public/${id}`, function (err) {
     if (err) {
       return res.status(500).send(err);
     }
@@ -60,12 +60,12 @@ app.post("/upload", (req, res, next) => {
     url: `public/${id}`,
   };
 
-  db.collection("api").save(save, (err, result) => {
+  db.collection("apiLocal").save(save, (err, result) => {
     if (err) return console.log(err);
 
     console.log(
       `saved success id: ${result.ops[0]._id},name: ${
-        result.ops[0].name
+      result.ops[0].name
       }.${result.ops[0].mimetype} to database`
     );
   });
@@ -73,7 +73,7 @@ app.post("/upload", (req, res, next) => {
 
 app.get("/findImage", (req, res) => {
   db
-    .collection("api")
+    .collection("apiLocal")
     .find()
     .toArray((err, result) => {
       if (err) return console.log(err);
@@ -96,14 +96,14 @@ app.post("/api/upload", (req, res) => {
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};

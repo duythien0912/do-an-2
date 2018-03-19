@@ -1,27 +1,36 @@
-import { Card, Icon, Upload, Modal, Layout, Col, Row, Button, Spin } from 'antd';
+import React from "react";
+import {
+  Card,
+  Icon,
+  Upload,
+  Modal,
+  Layout,
+  Col,
+  Row,
+  Spin,
+} from "antd";
+import axios from "axios";
 
-import React from 'react';
-import axios from 'axios';
-
-import UploadMutilfile from './UploadMutilfile';
+import UploadMutilfile from "./UploadMutilfile";
+import TopNavigation from "./navigation/TopNavigation";
 const { Meta } = Card;
 const { Content } = Layout;
 
 class Main extends React.Component {
   state = {
     previewVisible: false,
-    previewImage: '',
+    previewImage: "",
     fileList: [],
     filePrewload: [
       {
-        status: 'none',
+        status: "none",
       },
     ],
     loading: true,
   };
 
   componentDidMount = () => {
-    axios.get('http://localhost:8000/findImage').then(res => {
+    axios.get("http://localhost:8000/findImage").then(res => {
       this.setState({
         filePrewload: res.data,
         loading: false,
@@ -43,7 +52,12 @@ class Main extends React.Component {
   };
 
   render() {
-    const { previewVisible, previewImage, fileList, filePrewload } = this.state;
+    const {
+      previewVisible,
+      previewImage,
+      fileList,
+      filePrewload,
+    } = this.state;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -55,10 +69,10 @@ class Main extends React.Component {
       return (
         <div
           style={{
-            height: '100vh',
-            display: 'flex',
-            'align-items': 'center',
-            'justify-content': 'center',
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Spin style={{ margin: 0 }} />
@@ -67,29 +81,57 @@ class Main extends React.Component {
     } else {
       return (
         <div className="clearfix">
+          <TopNavigation />
+
           <Upload
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
             action="//localhost:8000/upload/"
             listType="picture-card"
+            multiple={true}
             fileList={fileList}
             onPreview={this.handlePreview}
             onChange={this.handleChange}
           >
             {fileList.length >= 10 ? null : uploadButton}
           </Upload>
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          <Modal
+            visible={previewVisible}
+            footer={null}
+            onCancel={this.handleCancel}
+          >
+            <img
+              alt="example"
+              style={{ width: "100%" }}
+              src={previewImage}
+            />
           </Modal>
-          <UploadMutilfile />
+          {
+            //<UploadMutilfile />
+          }
 
-          <Content>
+          <Content
+            style={{
+              background: "#f0f2f5",
+            }}
+          >
             <Row type="flex" justify="space-around" align="middle">
-              {filePrewload.map((fileList, i) => {
+              {/*filePrewload.map((fileList, i) => {
                 return (
                   <Col xs={10} sm={9} md={7} key={fileList._id}>
                     <Card
                       hoverable
-                      style={{ width: 'vw' }}
-                      cover={<img alt="example" src={`http://localhost:8000/${fileList.url}`} />}
+                      style={{ width: "vw" }}
+                      cover={
+                        <img
+                          alt="example"
+                          src={`http://localhost:8000/${
+                            fileList.url
+                          }`}
+                        />
+                      }
                     >
                       <Meta
                         title={`Name: ${fileList.name}`}
@@ -98,21 +140,27 @@ class Main extends React.Component {
                     </Card>
                   </Col>
                 );
-              })}
+              })*/}
 
               {fileList.map((fileList, i) => {
                 return (
                   <Col xs={10} sm={9} md={7} key={fileList.uid}>
-                    {fileList.status !== 'done' ? (
-                      <p>Loading</p>
+                    {fileList.status !== "done" ? (
+                      <Card
+                        hoverable
+                        style={{ width: "vw" }}
+                        loading
+                      />
                     ) : (
                       <Card
                         hoverable
-                        style={{ width: 'vw' }}
+                        style={{ width: "vw" }}
                         cover={
                           <img
                             alt="example"
-                            src={`http://localhost:8000/${fileList.response.fileUrl}`}
+                            src={`http://localhost:8000/${
+                              fileList.response.fileUrl
+                            }`}
                           />
                         }
                       >
