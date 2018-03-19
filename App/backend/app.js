@@ -30,7 +30,7 @@ app.use("/public", express.static(__dirname + "/public"));
 var db;
 
 MongoClient.connect(
-  "mongodb://admin:admin@ds249787.mlab.com:49787/uploadfile",
+  "your_key",
   (err, client) => {
     if (err) return console.log(err);
     db = client.db("uploadfile");
