@@ -2,7 +2,10 @@
 
 ## [DEMO](https://uploadfile-duythien0914.c9users.io:8082/)
 
-![Upload page](https://github.com/duythien0912/do-an-2/blob/master/Image/Screenshot%20from%202018-03-18%2016-47-31.png)
+![Upload page](https://github.com/duythien0912/do-an-2/blob/master/Image/screencapture-sleepy-eyrie-34647-herokuapp-1527177235047.png)
+![Upload page](https://github.com/duythien0912/do-an-2/blob/master/Image/screencapture-sleepy-eyrie-34647-herokuapp-gallery-1527177259165.png)
+![Upload page](https://github.com/duythien0912/do-an-2/blob/master/Image/screencapture-sleepy-eyrie-34647-herokuapp-user-1527177268920.png)
+
 
 ## Quick start
 `
