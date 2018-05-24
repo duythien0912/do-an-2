@@ -1,5 +1,11 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.gutter-box {
+  padding: 5px 0;
+}
+.SiderUser {
+  min-width: 30vw !important;
+}
+.iconUser {
+  font-size: 14px;
+  margin-left: 8px;
+  margin-right: 1px;
 }
