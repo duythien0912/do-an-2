@@ -1,140 +1,74 @@
 import React from "react";
-import {
-  Layout,
-  Menu,
-  Breadcrumb,
-  Spin,
-  Icon,
-  Card,
-  Col,
-  Row,
-} from "antd";
-import axios from "axios";
+import { Layout, Icon } from "antd";
+import { Link } from "react-router-dom";
 
 import TopNavigation from "../navigation/TopNavigation";
-import BottomNavigation from "../navigation/BottomNavigation";
+import background1 from "../../image/background1.jpeg";
+//import background2 from "../../image/background2.jpeg";
+//import background3 from "../../image/background3.jpeg";
 
-const { Meta } = Card;
-
-const { Header, Content, Footer } = Layout;
-
-class HomePage extends React.Component {
-  state = {
-    filePrewload: [],
-    loading: true,
-  };
-
-  componentDidMount = () => {
-    axios.get("http://localhost:8000/findImage").then(res => {
-      this.setState({
-        filePrewload: res.data,
-        loading: false,
-      });
-    });
-  };
-
-  render() {
-    const {
-      previewVisible,
-      previewImage,
-      fileList,
-      filePrewload,
-    } = this.state;
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-
-    if (this.state.loading) {
-      return (
-        <div
+const HomePage = () => (
+  <div>
+    <Layout>
+      <TopNavigation />
+      <div
+        style={{
+          minHeight: "100vh",
+          color: "#F3ECFF",
+          textAlign: "center",
+          background: `url(${background1}) no-repeat center center fixed`,
+          backgroundSize: "cover",
+          filter: "blur(2px)"
+        }}
+        className="home__background"
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "20vh",
+          right: "15vw"
+        }}
+      >
+        <p
           style={{
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            color: "#F3ECFF",
+            fontSize: "4em",
+            fontStyle: "italic",
+            textAlign: "-webkit-auto",
+            fontWeight: "bold"
           }}
         >
-          <Spin style={{ margin: 0 }} />
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <Layout>
-            <TopNavigation
-              style={{ position: "fixed", width: "100%" }}
+          Just a image page !
+        </p>
+        <Link to="/upload">
+          <div
+            style={{
+              border: "0.5em solid #F3ECFF",
+              padding: "1em",
+              borderRadius: "20px",
+              boxShadow: "-4px 4px 20px 0px #585858",
+              mixBlendMode: "hard-light"
+            }}
+          >
+            <Icon
+              type="cloud-upload-o"
+              style={{ fontSize: "4em", color: "#F3ECFF" }}
             />
-            <div
+            <p
               style={{
-                minHeight: "50vh",
-                background:
-                  "#4568dc" /* fallback for old browsers */,
-                background:
-                  "-webkit-linear-gradient(to bottom, #4568dc, #b06ab3)" /* Chrome 10-25, Safari 5.1-6 */,
-                background:
-                  "linear-gradient(to bottom, #4568dc, #b06ab3)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
                 color: "#F3ECFF",
-                textAlign: "center",
+                fontSize: "2em",
+                fontStyle: "italic",
+                fontWeight: "bold"
               }}
             >
-              <p
-                style={{
-                  color: "#F3ECFF",
-                  fontSize: "2.3em",
-                  position: "absolute",
-                  top: "25vh",
-                  left: "15vw",
-                  fontStyle: "italic",
-                }}
-              >
-                The stuff you’ll see everywhere else tomorrow.
-              </p>
-            </div>
-            <Content style={{ padding: "0 5vw", marginTop: 30 }}>
-              <div
-                style={{
-                  background: "#fff0",
-                  padding: 24,
-                  minHeight: 380,
-                  position: "relative",
-                  top: "-15vh",
-                }}
-              >
-                <Row type="flex" justify="space-around" align="top">
-                  {filePrewload.map((fileList, i) => {
-                    return (
-                      <Col xs={10} sm={9} md={5} key={fileList._id}>
-                        <Card
-                          hoverable
-                          style={{ width: "vw" }}
-                          cover={
-                            <img
-                              alt="example"
-                              src={`http://localhost:8000/${
-                                fileList.url
-                              }`}
-                            />
-                          }
-                        >
-                          <Meta
-                            title={`Name: ${fileList.name}`}
-                            description={`Type: ${fileList.type}`}
-                          />
-                        </Card>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              </div>
-            </Content>
-          </Layout>
-        </div>
-      );
-    }
-  }
-}
+              Upload your image.
+            </p>
+          </div>
+        </Link>
+      </div>
+    </Layout>
+  </div>
+);
 
 export default HomePage;

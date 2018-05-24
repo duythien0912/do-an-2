@@ -1,20 +1,18 @@
 import React from "react";
-import {
-  Card,
-  Icon,
-  Upload,
-  Modal,
-  Layout,
-  Col,
-  Row,
-  Spin,
-} from "antd";
-import axios from "axios";
+import { Card, Icon, Upload, Modal, Layout, Col, Row, message } from "antd";
 
-import UploadMutilfile from "./UploadMutilfile";
-import TopNavigation from "./navigation/TopNavigation";
+import LoadingCompoment from "./LoadingCompoment";
+
 const { Meta } = Card;
 const { Content } = Layout;
+
+const beforeUpload = file => {
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error("Image must smaller than 2MB!");
+  }
+  return isLt2M;
+};
 
 class Main extends React.Component {
   state = {
@@ -23,27 +21,27 @@ class Main extends React.Component {
     fileList: [],
     filePrewload: [
       {
-        status: "none",
-      },
+        status: "none"
+      }
     ],
-    loading: true,
+    loading: false,
+    token: false
   };
 
   componentDidMount = () => {
-    axios.get("http://localhost:8000/findImage").then(res => {
+    const token = localStorage.getItem("token");
+    if (token) {
       this.setState({
-        filePrewload: res.data,
-        loading: false,
+        token: true
       });
-    });
+    }
   };
-
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = file => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
+      previewVisible: true
     });
   };
 
@@ -52,12 +50,7 @@ class Main extends React.Component {
   };
 
   render() {
-    const {
-      previewVisible,
-      previewImage,
-      fileList,
-      filePrewload,
-    } = this.state;
+    const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -66,47 +59,37 @@ class Main extends React.Component {
     );
 
     if (this.state.loading) {
-      return (
-        <div
-          style={{
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Spin style={{ margin: 0 }} />
-        </div>
-      );
+      return <LoadingCompoment isLoading={this.state.loading} />;
     } else {
       return (
         <div className="clearfix">
-          <TopNavigation />
-
-          <Upload
+          <div
+            className="navMargin"
             style={{
-              marginLeft: "auto",
-              marginRight: "auto",
+              margin: "auto",
+              width: "max-content",
+              marginTop: "10vh"
             }}
-            action="//localhost:8000/upload/"
-            listType="picture-card"
-            multiple={true}
-            fileList={fileList}
-            onPreview={this.handlePreview}
-            onChange={this.handleChange}
           >
-            {fileList.length >= 10 ? null : uploadButton}
-          </Upload>
+            <Upload
+              action="/upload/"
+  	      accept="image/*"
+              listType="picture-card"
+              multiple={false}
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+              beforeUpload={beforeUpload}
+            >
+              {fileList.length >= 10 ? null : uploadButton}
+            </Upload>
+          </div>
           <Modal
             visible={previewVisible}
             footer={null}
             onCancel={this.handleCancel}
           >
-            <img
-              alt="example"
-              style={{ width: "100%" }}
-              src={previewImage}
-            />
+            <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
           {
             //<UploadMutilfile />
@@ -114,43 +97,15 @@ class Main extends React.Component {
 
           <Content
             style={{
-              background: "#f0f2f5",
+              background: "#f0f2f5"
             }}
           >
             <Row type="flex" justify="space-around" align="middle">
-              {/*filePrewload.map((fileList, i) => {
-                return (
-                  <Col xs={10} sm={9} md={7} key={fileList._id}>
-                    <Card
-                      hoverable
-                      style={{ width: "vw" }}
-                      cover={
-                        <img
-                          alt="example"
-                          src={`http://localhost:8000/${
-                            fileList.url
-                          }`}
-                        />
-                      }
-                    >
-                      <Meta
-                        title={`Name: ${fileList.name}`}
-                        description={`Type: ${fileList.type}`}
-                      />
-                    </Card>
-                  </Col>
-                );
-              })*/}
-
               {fileList.map((fileList, i) => {
                 return (
                   <Col xs={10} sm={9} md={7} key={fileList.uid}>
                     {fileList.status !== "done" ? (
-                      <Card
-                        hoverable
-                        style={{ width: "vw" }}
-                        loading
-                      />
+                      <Card hoverable style={{ width: "vw" }} loading />
                     ) : (
                       <Card
                         hoverable
@@ -158,9 +113,7 @@ class Main extends React.Component {
                         cover={
                           <img
                             alt="example"
-                            src={`http://localhost:8000/${
-                              fileList.response.fileUrl
-                            }`}
+                            src={`/${fileList.response.fileUrl}`}
                           />
                         }
                       >

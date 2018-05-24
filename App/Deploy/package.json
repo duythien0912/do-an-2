@@ -1,0 +1,31 @@
+{
+  "name": "Bestever",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=9.9.0",
+    "yarn": ">=1.5.1"
+  },
+  "scripts": {
+    "startDev": "node src/app.js",
+    "preinstall": "npm install pm2 -g",
+    "start": "pm2-runtime src/app.js -i max"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cloudinary": "^1.11.0",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "debug": "~2.6.9",
+    "dotenv": "^5.0.1",
+    "express": "~4.15.5",
+    "express-fileupload": "^0.3.0",
+    "formidable": "^1.2.0",
+    "fs": "^0.0.1-security",
+    "mongodb": "^3.0.4",
+    "mongoose": "^5.0.17",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5",
+    "uuid": "^3.2.1"
+  }
+}
