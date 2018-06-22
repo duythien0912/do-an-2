@@ -1,12 +1,14 @@
 import uuidV1 from "uuid/v1";
 import cloudinary from "cloudinary";
+require("dotenv").config();
 
 import imageModel from "../models/imageModel.js";
 
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
 });
 
 export default {
@@ -56,14 +58,19 @@ export default {
     const type = imageFile.mimetype.split("/")[1];
     let id = uuidV1();
     const publicUrl = `${process.env.HOST_APP}/public/${id}.${type}`;
+    const   data_uri_prefix = "data:" + imageFile.mimetype + ";base64,"
+    const base64Image = req.files.file.data.toString('base64');
+    const    imageUri = data_uri_prefix + base64Image
 
+
+    cloudinary.v2.uploader.upload(imageUri, (error, result) => {
+if(error){
     imageFile.mv(`./public/${id}.${type}`, err => {
       if (err) {
         return res.status(500).send(err);
       }
     });
-
-    cloudinary.v2.uploader.upload(publicUrl, (error, result) => {
+}
       const image = new imageModel({
         name: imageFile.name,
         type: imageFile.mimetype,

@@ -9,3 +9,15 @@
   margin-left: 8px;
   margin-right: 1px;
 }
+.ant-dropdown-menu.ant-dropdown-menu-select.ant-dropdown-menu-select-picture{
+  box-shadow: none;
+  text-align: center;
+  padding: 3%;
+}
+.ant-dropdown.ant-dropdown-placement-bottomCenter{
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  padding: 3%;
+  width: 100%;
+}
+

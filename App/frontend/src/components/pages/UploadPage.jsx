@@ -1,16 +1,19 @@
 import React from "react";
 
-import Main from "../Main";
 import UploadMutilfile from "../UploadMutilfile";
 import TopNavigation from "../navigation/TopNavigation";
 
-const UploadPage = () => {
+const UploadPage = props => {
   return (
     <div>
       <TopNavigation />
       <div style={{ paddingTop: "10vh" }} />
 
-      {localStorage.getItem("token") ? <UploadMutilfile /> : <Main />}
+      {localStorage.getItem("token") ? (
+        <UploadMutilfile />
+      ) : (
+        props.history.push("/login")
+      )}
     </div>
   );
 };

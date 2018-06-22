@@ -1,10 +1,10 @@
 import React from "react";
-import { Card, Icon, Upload, Modal, Layout, Col, Row, message } from "antd";
+import { Icon, Upload, Button, message, Dropdown } from "antd";
 
 import LoadingCompoment from "./LoadingCompoment";
 
-const { Meta } = Card;
-const { Content } = Layout;
+// const { Meta } = Card;
+// const { Content } = Layout;
 
 const beforeUpload = file => {
   const isLt2M = file.size / 1024 / 1024 < 2;
@@ -50,12 +50,27 @@ class Main extends React.Component {
   };
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { /*previewVisible, previewImage,*/ fileList } = this.state;
     const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
+      <Button>
+        <Icon type="upload" />
+        Upload
+      </Button>
+    );
+
+    const uploadForm = (
+      <Upload
+        action="/upload/"
+        accept="image/*"
+        listType="picture"
+        multiple={false}
+        fileList={fileList}
+        onPreview={this.handlePreview}
+        onChange={this.handleChange}
+        beforeUpload={beforeUpload}
+      >
+        {fileList.length >= 10 ? null : uploadButton}
+      </Upload>
     );
 
     if (this.state.loading) {
@@ -63,6 +78,14 @@ class Main extends React.Component {
     } else {
       return (
         <div className="clearfix">
+          <Dropdown
+            overlay={uploadForm}
+            trigger={["click"]}
+            placement="bottomCenter"
+          >
+            <Button>bottomCenter</Button>
+          </Dropdown>
+
           <div
             className="navMargin"
             style={{
@@ -71,19 +94,10 @@ class Main extends React.Component {
               marginTop: "10vh"
             }}
           >
-            <Upload
-              action="/upload/"
-  	      accept="image/*"
-              listType="picture-card"
-              multiple={false}
-              fileList={fileList}
-              onPreview={this.handlePreview}
-              onChange={this.handleChange}
-              beforeUpload={beforeUpload}
-            >
-              {fileList.length >= 10 ? null : uploadButton}
-            </Upload>
+            {uploadForm}
           </div>
+
+          {/*
           <Modal
             visible={previewVisible}
             footer={null}
@@ -113,7 +127,7 @@ class Main extends React.Component {
                         cover={
                           <img
                             alt="example"
-                            src={`/${fileList.response.fileUrl}`}
+                            src={`${fileList.response.url}`}
                           />
                         }
                       >
@@ -128,6 +142,7 @@ class Main extends React.Component {
               })}
             </Row>
           </Content>
+*/}
         </div>
       );
     }

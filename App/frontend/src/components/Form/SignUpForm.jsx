@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Input, Tooltip, Icon, Row, Col, Checkbox, Button } from "antd";
 import axios from "axios";
+import Link from "react-router-dom/Link";
 
 const FormItem = Form.Item;
 
@@ -176,6 +177,7 @@ class RegistrationForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
+          <Link to="/signup">sign in</Link> Or
           <Button type="primary" htmlType="submit">
             Register
           </Button>

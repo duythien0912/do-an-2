@@ -1,37 +1,39 @@
-import React from "react";
-import { Upload, Icon, message } from "antd";
+import React from 'react';
+import { Upload, Icon, message } from 'antd';
 
 const Dragger = Upload.Dragger;
 
 const props = {
-  name: "file",
+  name: 'file',
   multiple: true,
-  accept: "image/*",
+  accept: 'image/*',
   headers: {
-    user: `${
-      localStorage.getItem("token")
-        ? localStorage.getItem("token").split(" ")[2]
-        : null
-    }`
+    user: `${localStorage.getItem('token') ? localStorage.getItem('token').split(' ')[2] : null}`,
   },
-  action: "/upload",
+  listType: 'picture',
+  action: '/upload',
   onChange(info) {
     const status = info.file.status;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-      console.log(info.fileList[0] ? info.fileList[0].response.fileUrl : null);
+    if (status !== 'uploading') {
+      console.log(info.file);
     }
-    if (status === "done") {
+    if (status === 'done') {
       message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
+    } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
-  }
+  },
+  onPreview(file) {
+    console.log(file);
+    if (file.response.url) {
+      window.open(file.response.url, '_blank');
+    }
+  },
 };
 
 class UploadMutilfile extends React.Component {
   state = {
-    urlImage: ""
+    urlImage: '',
   };
 
   render() {
@@ -42,13 +44,8 @@ class UploadMutilfile extends React.Component {
             <p className="ant-upload-drag-icon">
               <Icon type="inbox" />
             </p>
-            <p className="ant-upload-text">
-              Click or drag file to this area to upload
-            </p>
-            <p className="ant-upload-hint">
-              Support for a single or bulk upload. Strictly prohibit from
-              uploading company data or other band files
-            </p>
+            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+            <p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
           </Dragger>
         </div>
       </div>

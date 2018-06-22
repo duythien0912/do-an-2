@@ -18,10 +18,12 @@ var _imageModel2 = _interopRequireDefault(_imageModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+require("dotenv").config();
+
 _cloudinary2.default.config({
-  cloud_name: "dilijjjnt",
-  api_key: "965942992426216",
-  api_secret: "U3qqtBQsZiApbjDBVzc4lISzvLY"
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
 });
 
 exports.default = {
@@ -65,14 +67,18 @@ exports.default = {
     var type = imageFile.mimetype.split("/")[1];
     var id = (0, _v2.default)();
     var publicUrl = process.env.HOST_APP + "/public/" + id + "." + type;
+    var data_uri_prefix = "data:" + imageFile.mimetype + ";base64,";
+    var base64Image = req.files.file.data.toString('base64');
+    var imageUri = data_uri_prefix + base64Image;
 
-    imageFile.mv("./public/" + id + "." + type, function (err) {
-      if (err) {
-        return res.status(500).send(err);
+    _cloudinary2.default.v2.uploader.upload(imageUri, function (error, result) {
+      if (error) {
+        imageFile.mv("./public/" + id + "." + type, function (err) {
+          if (err) {
+            return res.status(500).send(err);
+          }
+        });
       }
-    });
-
-    _cloudinary2.default.v2.uploader.upload(publicUrl, function (error, result) {
       var image = new _imageModel2.default({
         name: imageFile.name,
         type: imageFile.mimetype,
